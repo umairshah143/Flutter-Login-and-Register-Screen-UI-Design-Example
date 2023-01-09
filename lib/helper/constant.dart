@@ -13,6 +13,9 @@ Color primaryColor = HexColor('#023B47');
 Color secondaryColor = HexColor('#1F7879');
 Color secondaryTextColor = HexColor('#658E92');
 
+// API Url
+ String apiUrl='https://api.thecodepie.com/public/api';
+
 spancer({
   double w = 0,
   double h = 0,

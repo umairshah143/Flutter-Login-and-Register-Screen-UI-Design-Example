@@ -16,7 +16,7 @@ InputField({
       controller: controller,
       decoration: InputDecoration(
         hintStyle: TextStyle(
-          color: secondaryTextColor,
+          color: Colors.white,
           fontSize: 22,
         ),
         hintText: hintText,

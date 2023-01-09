@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:codepie/helper/constant.dart';
+import 'package:codepie/methods/api.dart';
 import 'package:codepie/screens/auth/login.dart';
 import 'package:codepie/widget/input_field.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +17,24 @@ class _RegisterState extends State<Register> {
   TextEditingController email = TextEditingController();
   TextEditingController username = TextEditingController();
   TextEditingController password = TextEditingController();
+
+  void registerUser() async {
+    final data = {
+      'email': email.text.toString(),
+      'name': username.text.toString(),
+      'password': password.text.toString(),
+    };
+    final result = await API().postRequest(route: '/register', data: data);
+    final response = jsonDecode(result.body);
+    if (response['status'] == 200) {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => Login(),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     double width = deviceWidth(context);
@@ -75,7 +96,7 @@ class _RegisterState extends State<Register> {
                 ),
                 InputField(
                   width: width,
-                  controller: email,
+                  controller: username,
                   hintText: 'Username',
                 ),
                 spancer(
@@ -100,42 +121,47 @@ class _RegisterState extends State<Register> {
                 spancer(
                   h: height * 0.1,
                 ),
-                Container(
-                  width: double.maxFinite,
-                  alignment: Alignment.centerRight,
-                  padding: spacing(
-                    h: 20,
-                  ),
+                InkWell(
+                  onTap: () {
+                    registerUser();
+                  },
                   child: Container(
-                    width: width * 0.3,
+                    width: double.maxFinite,
+                    alignment: Alignment.centerRight,
                     padding: spacing(
                       h: 20,
-                      v: 10,
                     ),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(width),
-                    ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text(
-                          'OK',
-                          style: TextStyle(
-                            color: primaryColor,
-                            fontSize: 18,
+                    child: Container(
+                      width: width * 0.3,
+                      padding: spacing(
+                        h: 20,
+                        v: 10,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(width),
+                      ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(
+                            'OK',
+                            style: TextStyle(
+                              color: primaryColor,
+                              fontSize: 18,
+                            ),
+                            textAlign: TextAlign.right,
                           ),
-                          textAlign: TextAlign.right,
-                        ),
-                        spancer(
-                          w: 10,
-                        ),
-                        Icon(
-                          Icons.arrow_right_alt_rounded,
-                          color: primaryColor,
-                        )
-                      ],
+                          spancer(
+                            w: 10,
+                          ),
+                          Icon(
+                            Icons.arrow_right_alt_rounded,
+                            color: primaryColor,
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ),
